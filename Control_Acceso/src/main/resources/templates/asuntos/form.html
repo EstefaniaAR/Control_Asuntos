@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:form="http://www.springframework.org/tags/form ">
+<head th:replace="layout/layout::meta">
+
+</head>
+<body>
+	<header th:replace="layout/layout::header"></header>
+	<h1 class="card-header text-center" th:text="${title}"></h1>
+	<div class="container text-center py-4">
+		<div class="row">
+			<div class="col-md-12">
+				<form th:object="${asunto}" th:action="@{/asunto/form}" method="post" enctype="multipart/form-data">
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<label for="referencia">Referencia</label> 
+							<input th:field="*{referencia}" type="text" class="form-control" id="referencia"   maxlength="30">
+						</div>
+						
+						<div class="form-group col-md-6">
+							<label for="dgipo">DGIPO/SIASE </label> 
+							<input th:field="*{dgipo}" type="text" class="form-control" id="dgipo"   maxlength="30">
+						</div>
+					</div>
+					
+					<div class="form-row">
+						<div class="form-group col-md-12">
+							<label for="fecha_oficio">Fecha de Oficio</label> 
+							<input id="fecha_oficio" th:field="*{fechaOficio}" type="date"  class="form-control"  >
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="resumen">Asunto *</label>
+						<textarea th:field="*{resumen}" class="form-control" id="resumen" placeholder="Asunto"   maxlength="200"></textarea>
+					</div>
+					
+					<div class="form-row">
+						<div class="form-group col-md-11">
+							<label for="atencion">Tipo de Atención</label> 
+							<select id="atencion" th:field="*{atencion}" class="form-control"  >
+								<option  selected="selected" value="0"> -- Selecciona Tipode  Atención --</option>
+								<option th:each="atencion : ${atenciones}" th:value="${atencion.id}" th:text="${atencion.descripcion}"></option>
+							</select>
+						</div>
+						<div class="form-group col-md-1 wrapper" >
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">+</button>
+						</div>
+						
+						<!-- Modal -->
+						<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						  <div class="modal-dialog" role="document">
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <h5 class="modal-title" id="exampleModalLabel">Inserta Tipo de Asunto</h5>
+						        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						          <span aria-hidden="true">&times;</span>
+						        </button>
+						      </div>
+						      <div class="modal-body">
+						        <div class="form-row">
+									<div class="form-group col-md-12">
+										<label >Descripción</label> 
+										<input name ="descripcion" type="text" class="form-control" id="referencia" maxlength="100">
+									</div>
+									<div class="form-group col-md-12">
+										<label >Icono</label> 
+										<input name ="icon" type="text" class="form-control" id="referencia" placeholder="Debe ser una clase de Font Awesome" maxlength="30">
+										<a target="_blank" href="https://fontawesome.com/"><small>Font Awesome</small></a>
+									</div>
+									<button class="btn btn-primary btn-lg btn-block" type="submit" name="insert_tipo_asunto">Registrar</button>
+								</div>
+						
+						      </div>
+						      <div class="modal-footer">
+						        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						      </div>
+						    </div>
+						  </div>
+						</div>
+					</div>
+					
+					<div class="form-row">
+						<div  class="form-group col-md-11" >
+							<label for="remitente">Remitente</label> 
+							<select id="remitente" th:field="*{remitente}" class="form-control"  >
+								<option  selected="selected" value="0"> -- Selecciona Remitente --</option>
+								<option th:each="remitente : ${remitentes}" th:value="${remitente.id}" th:text="${remitente.descripcion}"></option>
+							</select>
+						</div>
+						
+						<div class="form-group col-md-1 wrapper" >
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal2">+</button>
+						</div>
+						
+						<!-- Modal -->
+						<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						  <div class="modal-dialog" role="document">
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <h5 class="modal-title" id="exampleModalLabel">Inserta Remitente</h5>
+						        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						          <span aria-hidden="true">&times;</span>
+						        </button>
+						      </div>
+						      <div class="modal-body">
+						        <div class="form-row">
+									<div class="form-group col-md-12">
+										<label >Descripción</label> 
+										<input name ="descripcion_rem" type="text" class="form-control" id="referencia" maxlength="100">
+									</div>
+									<div class="form-group col-md-12">
+										<label >Icono</label> 
+										<input name ="icon_rem" type="text" class="form-control" id="referencia" placeholder="Debe ser una clase de Font Awesome" maxlength="30">
+										<a target="_blank" href="https://fontawesome.com/"><small>Font Awesome</small></a>
+									</div>
+									<button class="btn btn-primary btn-lg btn-block" type="submit" name="insert_remitente">Registrar</button>
+								</div>
+						
+						      </div>
+						      <div class="modal-footer">
+						        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						      </div>
+						    </div>
+						  </div>
+						</div>
+					</div>
+					
+					<div class="form-row">
+						<div  class="form-group col-md-11" >
+							<label for="cargo">Cargo</label> 
+							<select id="cargo" th:field="*{cargo}" class="form-control"  >
+								<option  selected="selected" value="0"> -- Selecciona Cargo --</option>
+								<option th:each="cargo : ${cargos}" th:value="${cargo.id}" th:text="${cargo.descripcion}"></option>
+							</select>
+						</div>
+						
+						<div class="form-group col-md-1 wrapper" >
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal3">+</button>
+						</div>
+						
+						<!-- Modal -->
+						<div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						  <div class="modal-dialog" role="document">
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <h5 class="modal-title" id="exampleModalLabel">Inserta Cargo</h5>
+						        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						          <span aria-hidden="true">&times;</span>
+						        </button>
+						      </div>
+						      <div class="modal-body">
+						        <div class="form-row">
+									<div class="form-group col-md-12">
+										<label >Descripción</label> 
+										<input name ="descripcion_cargo" type="text" class="form-control" id="referencia" maxlength="100">
+									</div>
+									<div class="form-group col-md-12">
+										<label >Icono</label> 
+										<input name ="icon_cargo" type="text" class="form-control" id="referencia" placeholder="Debe ser una clase de Font Awesome" maxlength="30">
+										<a target="_blank" href="https://fontawesome.com/"><small>Font Awesome</small></a>
+									</div>
+									<button class="btn btn-primary btn-lg btn-block" type="submit" name="insert_cargo">Registrar</button>
+								</div>
+						
+						      </div>
+						      <div class="modal-footer">
+						        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						      </div>
+						    </div>
+						  </div>
+						</div>
+					</div>
+					
+					<div class="form-row">
+						<div class="form-group col-md-12">
+							<label for="nivel">Nivel</label> 
+							<select id="nivel" th:field="*{nivel}" class="form-control"  >
+								<option  selected="selected" value="0"> -- Selecciona Nivel --</option>
+								<option th:each="nivel : ${niveles}" th:value="${nivel.id}" th:text="${nivel.descripcion}" ></option>
+							</select>
+						</div>
+						
+						<div id="sub_div" class="form-group col-md-12" >
+							<label for="Subsistema">Subsistema</label> 
+							<select id="subsistema" th:field="*{subsistema}" class="form-control"  >
+							</select>
+						</div>
+					</div>
+					
+					<div class="form-group col-md-12">
+						<label for="anexo">Anexo</label> 
+						<div class="form-control">
+						<label > Examinar: 
+							<input style="display:none;border:cursor" class="btn btn-default" type="file" name="file" id="file" onchange="$('#upload-file-info').html(this.files[0].name)"  >
+						</label>
+						<span class='label label-info' id="upload-file-info"></span>
+						</div>
+					</div>
+			
+					<button type="submit" name="insert_asunto" class="btn btn-primary btn-lg btn-block">Registrar Asunto</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<footer th:replace="layout/layout::footer"></footer>
+		
+</body>
+</html>

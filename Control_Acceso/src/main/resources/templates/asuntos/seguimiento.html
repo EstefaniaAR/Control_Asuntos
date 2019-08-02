@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:form="http://www.springframework.org/tags/form ">
+<head th:replace="layout/layout::meta">
+
+</head>
+<body>
+	<header th:replace="layout/layout::header"></header>
+	<h1 class="card-header text-center" th:text="${title}"></h1>
+
+	<div class="container text-center py-4" >
+		<form th:action="@{/asunto/seguimiento/form}" th:object="${result}" method="POST" enctype="multipart/form-data">
+			<div class="card">
+				<div class="card-header">Referencia</div>
+				<div class="card-body">
+					<div class="form-group row">
+						<label for="folio" class="col-sm-2 col-form-label">Fecha Registro</label>
+						<div class="col-sm-4">
+							<input th:field="*{fechaRegistro}"  class="form-control" id="fecha"   readonly>
+						</div>
+						
+						<label for="folio" class="col-sm-2 col-form-label">Fecha Oficio</label>
+						<div class="col-sm-4">
+							<input th:field="*{fechaOficio}" class="form-control" id="fecha_of"  >
+						</div>
+					</div>
+						
+					<div class="form-group row">
+						<label for="folio" class="col-sm-2 col-form-label">Folio</label>
+						<div class="col-sm-2">
+							<input th:field="*{id}" type="text" class="form-control" id="folio"   
+							>
+						</div>
+						
+						<label for="folio" class="col-sm-2 col-form-label">DGIPO</label>
+						<div class="col-sm-2">
+							<input th:field="*{dgipo}" class="form-control" id="dgipo"   >
+						</div>
+						
+						<label for="folio" class="col-sm-2 col-form-label">Referencia</label>
+						<div class="col-sm-2">
+							<input th:field="*{referencia}" type="text" class="form-control" id="referencia"   >
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="folio" class="col-sm-2 col-form-label">Asunto</label>
+						<div class="col-sm-10">
+							<textarea th:field="*{resumen}"  class="form-control" id="resumen"   ></textarea>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="folio" class="col-sm-2 col-form-label">Nivel</label>
+						<div class="col-sm-4">
+							<input th:field="*{nivel.descripcion}" class="form-control" id="nivel"   >
+						</div>
+						
+						<label for="folio" class="col-sm-2 col-form-label">Subsistema</label>
+						<div class="col-sm-4">
+							<input th:field="*{subsistema.descripcion}" class="form-control" id="nivel"   >
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="folio" class="col-sm-2 col-form-label">Remitente</label>
+						<div class="col-sm-4">
+							<input th:field="*{remitente.descripcion}" class="form-control" id="remitente"   >
+						</div>
+						
+						<label for="folio" class="col-sm-2 col-form-label">Cargo</label>
+						<div class="col-sm-4">
+							<input th:field="*{cargo.descripcion}" class="form-control" id="cargo"   >
+						</div>
+					</div>
+					<a th:href="@{'/asunto/render/'+*{id}}"  class="btn btn-success btn-lg glyphicon glyphicon-download-alt" ></a>
+				</div>
+			</div>
+		
+		
+			<div class="card">
+				<div class="card-header">Seguimiento</div>
+					
+				<div class="card-body">
+					<div class="form-group row">
+						<label for="folio" class="col-sm-2 col-form-label">Instrucción</label>
+						<div class="col-sm-10">
+							<input th:field="*{instruccion}" type="text" class="form-control" id="instruccion"  required>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="folio" class="col-sm-2 col-form-label">Estatus</label>
+						<div class="col-sm-4">
+							<select id="estatus" th:field="*{estatus}" class="form-control" required>
+								<option  selected="selected" value="0"> -- Selecciona Estatus --</option>
+								<option th:each="estatus : ${listEstatus}" th:value="${estatus.id}" th:text="${estatus.descripcion}"></option>
+							</select>
+						</div>
+						
+						<label for="folio" class="col-sm-2 col-form-label">Tipo de Asunto</label>
+						<div class="col-sm-4">
+							<input th:field="*{tipoAsunto}" class="form-control" id="tpo_asunto" required>
+						</div>
+					</div>
+				</div>
+				<button type="button" class="btn btn-primary" onclick="addRow()">Agregar Registro</button>
+				<table id="upload_respuesta" class="table table-sm table-striped table-hover">
+					<thead>
+						<tr>
+							<th>Oficio Referencia</th>
+							<th>Fecha Atención</th>
+							<th>Atendido</th>
+							<th>Seguimiento</th>
+							<th>Archivo</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr id="row" >
+							<td ><input id="ref" type="text" name="refs[]" ></td>
+							<td ><input id="fecha" type="date" name="fecs[]" ></td>
+							<td>
+								<select id="at" name="ats[]" class="form-control" >
+									<option  selected="selected" value="0"> -- Selecciona Atención --</option>
+									<option th:each="bnAtencion : ${listBnAtencion}" th:value="${bnAtencion.id}" th:text="${bnAtencion.descripcion}"></option>
+								</select>
+							</td>
+							<td ><input id="seg" type="text" name ="segs[]" ></td>
+							<td ><input id="file" type="file" name="files[]"></td>
+						</tr>
+					</tbody>
+				</table>
+				<table  class="table table-sm table-striped table-hover">
+					<tbody>
+					<tr  th:each="line : ${result.respuestas}">
+							<td ><label th:text="${line.referencia}" ></label></td>
+							<td ><label  th:text="${line.fechaRespuesta}"></label></td>
+							<td ><label th:text="${line.atendida.descripcion}"></label></td>
+							<td ><label th:text="${line.seguimiento}"></label> </td>
+							<td ><a th:href="@{'/asunto/seguimiento/render/'+${line.id}}"  class="btn btn-success btn-lg glyphicon glyphicon-download-alt" ></a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<button type="submit" class="btn btn-primary btn-lg btn-block">Registrar Seguimiento</button>
+		</form>
+	</div>
+	<footer th:replace="layout/layout::footer"></footer>
+</body>
+</html>

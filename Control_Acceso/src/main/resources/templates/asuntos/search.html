@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:form="http://www.springframework.org/tags/form ">
+	<head th:replace="layout/layout::meta">
+
+	</head>
+	<body>
+		<header th:replace="layout/layout::header"></header>
+		<h1 class="card-header text-center" th:text="${title}"></h1>
+		<div class="container text-center py-4">
+			<form th:object="${search}" th:action="@{/asunto/find}" method="get">
+				<div class="form-row">
+					<div class="form-group col-md-12">
+						<label for="folio">Folio</label> 
+						<input th:field="*{id}" type="number" class="form-control" id="folio" >
+					</div>
+					
+					<div class="form-group col-md-12">
+						<label for="referencia">Referencia</label> 
+						<input th:field="*{referencia}" type="text" class="form-control" id="referencia" >
+					</div>
+					
+					<div class="form-group col-md-12">
+						<label for="dgipo">DGIPO</label> 
+						<input th:field="*{dgipo}" type="text" class="form-control" id="dgipo">
+					</div>
+				</div>
+				
+				<button type="submit" class="btn btn-primary btn-lg btn-block">Buscar</button>
+				
+				<div class="container text-center py-4">
+					<table id="reporte" th:if="${not #lists.isEmpty(asuntos)}" class="table table-bordered table-striped my-4">
+						<thead class="thead-inverse">
+							<tr>
+								<td>Folio</td>
+								<td>Atención Oficio</td>
+								<td>Referencia</td>
+								<td>DGIPO</td>
+								<td>Fecha de Registro</td>
+								<td>Asunto</td>
+								<td>Subsistema</td>
+								<td>Remitente</td>
+								<td>Cargo</td>
+								<td>Fecha Oficio</td>
+								<td>Estatus</td>
+								<td>Ver y Editar</td>
+								<td>Anexo</td>
+							</tr>
+						</thead>
+						<tbody >
+							<tr th:each="asu : ${asuntos}">
+								<td th:text="${asu.id}"></td>
+								<td ><label th:text="${asu.atencion == null ? '': asu.atencion.descripcion}"></label><i  th:class="${asu.atencion == null ? '':asu.atencion.icon}"></i></td>
+								<td th:text="${asu.referencia}"></td>
+								<td th:text="${asu.dgipo}"></td>
+								<td th:text="${asu.fechaRegistro}"></td>
+								<td th:text="${asu.resumen}"></td>
+								<td th:text="${asu.subsistema.descripcion}"></td>
+								<td th:text="${asu.remitente.descripcion}"></td>
+								<td th:text="${asu.cargo.descripcion}"></td>
+								<td th:text="${asu.fechaOficio}"></td>
+								<td th:style="'background-color:'+ ${asu.estatus == null ? 'transparent':asu.estatus.icon}"></td>
+								<td ><a th:href="@{'/asunto/get/'+${asu.id}}"  class="btn btn-info btn-lg glyphicon glyphicon-pencil" ></a></td>
+								<td ><a th:href="@{'/asunto/render/'+${asu.id}}"  class="btn btn-success btn-lg glyphicon glyphicon-download-alt" ></a></td>
+							</tr>
+						</tbody>
+					</table>
+					<a style="font-size:30px"class="btn btn-outline-success fas fa-file-excel" onclick="fnExcelReport()" th:if="${not #lists.isEmpty(asuntos)}"></a>
+					<iframe id="txtArea1" style="display:none"></iframe>
+				</div>
+			</form>
+		</div>
+		<footer th:replace="layout/layout::footer"></footer>
+	</body>
+</html>
